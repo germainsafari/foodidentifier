@@ -17,7 +17,7 @@ export interface FoodAnalysis {
   description: string;
 }
 
-const GEMINI_API_KEY = '';
+const GEMINI_API_KEY = 'AIzaSyBWZhwhmkkR5bUaQyMOaujhQHyDYMna7uQ';
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
