@@ -17,12 +17,12 @@ const Footer = () => {
           <Link href="/contact" className="text-gray-400 hover:text-white">
             Contact
           </Link>
-
+          <a
             href="https://www.example.com/privacy"
             className="text-gray-400 hover:text-white"
             target="_blank"
             rel="noopener noreferrer"
-          
+          >
             Privacy Policy
           </a>
         </div>

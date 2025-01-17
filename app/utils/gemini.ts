@@ -15,6 +15,7 @@ export interface FoodAnalysis {
   countryOfOrigin: string;
   nutrition: NutritionalContent;
   description: string;
+  errorMessage?: string;  // Made optional to handle error cases
 }
 
 const GEMINI_API_KEY = 'AIzaSyBWZhwhmkkR5bUaQyMOaujhQHyDYMna7uQ';
@@ -41,7 +42,6 @@ const createDefaultResponse = (imageUrl: string): FoodAnalysis => ({
 
 export const analyzeFoodImage = async (image: File): Promise<FoodAnalysis> => {
   try {
-    // Use gemini-1.5-flash as recommended in the error message
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-flash",
       generationConfig: {
@@ -134,7 +134,8 @@ export const analyzeFoodImage = async (image: File): Promise<FoodAnalysis> => {
 
                 resolve({
                   ...fallbackData,
-                  imageUrl: base64Image
+                  imageUrl: base64Image,
+                  errorMessage: 'Failed to parse API response'
                 });
                 return;
               }
@@ -154,19 +155,25 @@ export const analyzeFoodImage = async (image: File): Promise<FoodAnalysis> => {
         console.error('All attempts failed or received non-retryable error:', lastError);
         resolve({
           ...createDefaultResponse(base64Image),
-          error: lastError?.message || 'Unknown error occurred'
+          errorMessage: lastError?.message || 'Unknown error occurred'
         });
       };
 
       reader.onerror = (error) => {
         console.error('FileReader Error:', error);
-        resolve(createDefaultResponse(""));
+        resolve({
+          ...createDefaultResponse(""),
+          errorMessage: 'Failed to read image file'
+        });
       };
 
       reader.readAsDataURL(image);
     });
   } catch (error) {
     console.error('Analyzer Error:', error);
-    return createDefaultResponse("");
+    return {
+      ...createDefaultResponse(""),
+      errorMessage: 'Failed to initialize analyzer'
+    };
   }
 };

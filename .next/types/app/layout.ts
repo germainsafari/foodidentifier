@@ -1,4 +1,4 @@
-// File: /home/runner/foodidentifier/app/layout.tsx
+// File: C:\Users\sfrge\Downloads\foodidentifier\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
